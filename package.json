@@ -1,0 +1,17 @@
+{
+  "name": "to-dolist",
+  "version": "1.0.0",
+  "description": "practice application",
+  "license": "ISC",
+  "author": "Mayank",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.2.1"
+  }
+}
