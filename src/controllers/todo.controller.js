@@ -38,7 +38,7 @@ export const updateTodo = async (req, res) => {
         if(description !== undefined) todo.description = description;
 
         await todo.save();
-        res.status(201).json({ message: 'Todo updated successfully', todo});
+        res.status(200).json({ message: 'Todo updated successfully', todo});
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server Error '});

@@ -12,7 +12,10 @@ const userSchema = new mongoose.Schema ({
         unique: true,
     },
     todos: {
-        type: [],
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Todo'
+        }],
     }
 }, { timestamps: true });
 
