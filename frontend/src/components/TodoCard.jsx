@@ -1,9 +1,8 @@
-import { updateTodo, deleteTodo, changeStatus } from "../api/todo.api.js";
+import { updateTodo } from "../api/todo.api.js";
 import { useState } from "react";
 import { TodoForm } from "./TodoForm.jsx";
 
-export const TodoCard = () => {
-    const [status, setStatus] = useState(false);
+export const TodoCard = ({ todo, onDelete, onStatusChange }) => {
     const [formData, setFormData] = useState({
         title: TodoForm.title,
         description: TodoForm.description,
@@ -13,44 +12,12 @@ export const TodoCard = () => {
     const [errorMsg, setErrorMsg] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        })
-        setErrorMsg("");
-    }
-
-    const changestatus = async (status) => {
-        setStatus(status);
-        await changeStatus(status);
-    };
-
-    const deletetodo = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setErrorMsg("");
-        setSuccessMsg("");
-        try {
-            const response = await deleteTodo(e._id);
-            if(response.success) {
-                setFormData("")
-            }
-            setSuccessMsg("Todo deleted Successfully");
-        } catch (error) {
-            setErrorMsg(error.message || "Failed to delete the todo");
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
     const updatetodo = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setErrorMsg("");
         setSuccessMsg("");
         try {
-           const { ...formData } = formData;
            const response = await updateTodo(formData);
            if(response.success) {
             setFormData({
@@ -67,18 +34,20 @@ export const TodoCard = () => {
     } 
 
     return (
-        <div className={`todo-card-page ${status === "false" ? "incomplete" : "completed"}`}>
+        <div className={`todo-card ${todo.status ? "completed" : "incomplete"}`}>
             <button onClick={updatetodo} className="del-btn" disabled={isLoading}>
-                {TodoForm}
+                <TodoForm />
             </button>
-            <button onClick={deletetodo} className="del-btn" disabled={isLoading}>
+            <button onClick={() => onDelete(todo._id)} className="del-btn" disabled={isLoading}>
                 {isLoading ? "Deleting a Todo..." : "Delete"}
             </button>
             <h2>{formData.title}</h2>
             {errorMsg && <div className="error-message">{errorMsg}</div>}
             {successMsg && <div className="success-message">{successMsg}</div>}
             <p>{formData.description}</p>
-            <button onClick={changestatus}></button>
+            <button onClick={() => onStatusChange(todo._id, !todo.status)}>
+                {todo.status ? "Incomplete" : "Completed"}
+            </button>
         </div>
     )
 }

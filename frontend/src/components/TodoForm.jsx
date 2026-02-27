@@ -1,11 +1,10 @@
 import { createTodo } from "../api/todo.api.js";
 import React, { useState } from 'react';
 
-export const TodoForm = () => {
+export const TodoForm = ({ onTodoCreated }) => {
     const [formData, setFormData] = useState({
         title: "",
         description: "",
-        status: false
     })
     const [isLoading, setIsLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
@@ -32,16 +31,18 @@ export const TodoForm = () => {
         }
 
         try {
-            const { ...formData } = formData;
-             
-            const response = await createTodo(formData);
-    
+            
+            const response = await createTodo(userId, formData.title, formData.description);
+            onTodoCreated(response.todo);
             const userId = response.user._id;
             if(!userId) {
                 console.error('No user Id in response', response);
                 throw new Error('UserId not found');
             }
-            setFormData("");
+            setFormData({
+                title: "",
+                description: "",
+            });
             setSuccessMsg("Todo created Successfully");
         } catch (error) {
             setErrorMsg(error.message || "Creating a new todo failed");

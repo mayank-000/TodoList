@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BaseURL = import.meta.env.BASE_URL;
+const BaseURL = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
     baseURL: BaseURL,
@@ -9,8 +9,8 @@ const api = axios.create({
     }
 });
 
-export const createTodo = async ( title, description) => {
-    const response = await api.post('/api/todo/create', { title, description });
+export const createTodo = async ( userId, title, description) => {
+    const response = await api.post('/api/todo/create', { userId, title, description });
     return response.data;
 }
 
@@ -19,12 +19,18 @@ export const updateTodo = async (todoId, title, description) => {
     return response.data;
 }
 
-export const deleteTodo = async (todoId) => {
-    const response = await api.delete('/api/todo/delete', { todoId });
+export const deleteTodo = async (todoId, userId) => {
+    const response = await api.delete('/api/todo/delete', { data: { todoId, userId } });
     return response.data;
 }
 
 export const changeStatus = async (todoId, status) => {
-    const response = await api.post('/api/todo/status', { todoId, status });
+    const response = await api.patch('/api/todo/status', { todoId, status });
     return response.data;
 }
+
+export const getTodos = async (userId) => {
+    const response = await api.get(`/api/todo/${userId}`);
+    return response.data;
+}
+
