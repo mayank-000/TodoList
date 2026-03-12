@@ -1,15 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { getProfile } from "../api/user.api.js";
 
 const AuthContext = createContext(null);
-
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('Auth must be used inside CheckAuth');
-    }
-    return context;
-}
 
 export const CheckAuth = ({ children }) => {
     const [user, setUser] = useState(null);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getTodos, deleteTodo, changeStatus } from "../api/todo.api";
+import { getTodos, deleteTodo, changeStatus } from "../api/todo.api.js";
 
 const HomePage = () => {
   const [todos, setTodos] = useState([]);

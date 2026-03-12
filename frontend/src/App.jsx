@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { CheckAuth } from './service/auth.js';
-import ProtectedRoute from './service/protected.js';
+import { CheckAuth } from './service/auth.jsx';
+import { ProtectedRoute } from './service/protected.jsx';
 import Register from './pages/SignUp';
 import Home from './pages/Home';
 
