@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createUser } from "../api/user.api.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -35,7 +35,7 @@ export const SignUp = () => {
             const response = await createUser(formData.username, formData.email);
             console.log('Full SignUp resposne', response);
     
-            const UID = response.userId;
+            const UID = response.data.userId;
             saveUserId(UID);
             setSuccessMsg("Account created successfully!");
             setTimeout(() => {

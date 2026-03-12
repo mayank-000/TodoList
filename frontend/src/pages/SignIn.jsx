@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../service/auth.jsx";
+import { useAuth } from "../service/useAuth.jsx";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../api/user.api.js";
 
@@ -31,10 +31,10 @@ const Register = () => {
         try {
             const response = await loginUser(formData.email);
 
-            const uid = response.user._id;
+            const uid = response.data.user._id;
 
             // update auth context
-            login(response.user, uid);
+            login({ _id: uid }, uid);
 
             navigate("/home");
 
