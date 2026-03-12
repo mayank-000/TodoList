@@ -1,7 +1,19 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { CheckAuth } from './service/auth.js';
+import ProtectedRoute from './service/protected.js';
+import Register from './pages/SignUp';
+import Home from './pages/Home';
+
 function App() {
-    <div>
-        <h1>Hii from Todo App</h1>
-        <button>Submit</button>
-    </div>
+    return (
+        <CheckAuth>
+            <Router>
+                <Routes>
+                    <Route path="/register" element={<Register />}></Route>
+                    <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>}></Route>
+                </Routes>
+            </Router>
+        </CheckAuth>
+    )
 }
 export default App;

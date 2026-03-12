@@ -5,6 +5,9 @@ import { connectDB } from './config/db.js';
 
 connectDB();
 
+import todoRouter from './routes/todo.route.js';
+import userRouter from './routes/user.route.js';
+
 app.use('/api/todo', todoRouter);
 app.use('/api/users', userRouter)
 

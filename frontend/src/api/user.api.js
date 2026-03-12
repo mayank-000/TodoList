@@ -18,3 +18,8 @@ export const loginUser = async ( email ) => {
     const response = await api.post('/api/users/sign-in', { email });
     return response;
 }
+
+export const getProfile = async (userId) => {
+    const response = await api.get(`/api/users/getProfile${userId}`);
+    return response;
+}

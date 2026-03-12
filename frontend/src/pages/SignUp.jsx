@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { createUser } from "../api/user.api.js";
-import { NavigateEvent } from "react";
-
-
+import { useNavigate } from "react-router-dom";
 
 export const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -12,6 +10,8 @@ export const SignUp = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
+
+    const navigate = useNavigate();
 
     const saveUserId = (userId) => {
         localStorage.setItem("TodoAppUID", userId);
@@ -39,7 +39,7 @@ export const SignUp = () => {
             saveUserId(UID);
             setSuccessMsg("Account created successfully!");
             setTimeout(() => {
-                NavigateEvent("/home");
+                navigate("/home");
             }, 3000);
         } catch (error) {
             setErrorMsg(error.message || "Signup failed, Try again");
