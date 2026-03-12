@@ -1,7 +1,7 @@
 import { createTodo } from "../api/todo.api.js";
 import React, { useState } from 'react';
 
-export const TodoForm = ({ onTodoCreated }) => {
+export const TodoForm = ({ onTodoCreated, userId }) => {
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -34,11 +34,6 @@ export const TodoForm = ({ onTodoCreated }) => {
             
             const response = await createTodo(userId, formData.title, formData.description);
             onTodoCreated(response.todo);
-            const userId = response.user._id;
-            if(!userId) {
-                console.error('No user Id in response', response);
-                throw new Error('UserId not found');
-            }
             setFormData({
                 title: "",
                 description: "",

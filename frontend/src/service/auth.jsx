@@ -1,7 +1,6 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getProfile } from "../api/user.api.js";
-
-const AuthContext = createContext(null);
+import { AuthContext } from "./authContext";
 
 export const CheckAuth = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -16,8 +15,8 @@ export const CheckAuth = ({ children }) => {
                     return;
                 }
                 const response = await getProfile(uid);
-                if(response?.user) {
-                    setUser(response.user);
+                if(response?.data?.user) {
+                    setUser(response.data.user);
                 }
             } catch (error) {
                 console.error(error);

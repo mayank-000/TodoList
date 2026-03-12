@@ -1,5 +1,5 @@
 import { TodoCard } from "./TodoCard"
-export const TodoList = ({ todos, onDelete, onStatusChange }) => {
+export const TodoList = ({ todos, onDelete, onStatusChange, onUpdate }) => {
     return (
         <div className="todo-list">
             {todos.map((todo) => (
@@ -8,6 +8,7 @@ export const TodoList = ({ todos, onDelete, onStatusChange }) => {
                     todo={todo}
                     onDelete={onDelete}
                     onStatusChange={onStatusChange}
+                    onUpdate={onUpdate}
                 />
             ))}
         </div>

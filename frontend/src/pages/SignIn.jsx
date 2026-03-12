@@ -31,7 +31,7 @@ const Register = () => {
         try {
             const response = await loginUser(formData.email);
 
-            const uid = response.data.user._id;
+            const uid = response.data.userId;
 
             // update auth context
             login({ _id: uid }, uid);

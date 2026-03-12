@@ -30,7 +30,7 @@ export const changeStatus = async (todoId, status) => {
 }
 
 export const getTodos = async (userId) => {
-    const response = await api.get(`/api/users/todos/${userId}`);
+    const response = await api.get(`/api/user/todos/${userId}`);
     return response.data;
 }
 

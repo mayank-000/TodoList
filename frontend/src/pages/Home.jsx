@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { getTodos, deleteTodo, changeStatus } from "../api/todo.api.js";
+import { TodoForm } from "../components/TodoForm";
+import { TodoList } from "../components/TodoList";
 
 const HomePage = () => {
   const [todos, setTodos] = useState([]);
@@ -40,7 +42,7 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
-        <TodoForm onTodoCreated={(newTodo) => setTodos([...todos, newTodo])}/>
+        <TodoForm userId={userId} onTodoCreated={(newTodo) => setTodos([...todos, newTodo])}/>
         <TodoList
             todos={incompleteTodos}
             onDelete={handleDelete}
