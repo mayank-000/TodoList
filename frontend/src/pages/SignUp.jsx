@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { createUser } from "../api/user.api.js";
+import { NavigateEvent } from "react";
+
+
 
 export const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -29,14 +32,14 @@ export const SignUp = () => {
         setSuccessMsg("");
 
         try {
-            const response = await createUser(formData);
+            const response = await createUser(formData.username, formData.email);
             console.log('Full SignUp resposne', response);
     
             const UID = response.userId;
             saveUserId(UID);
             setSuccessMsg("Account created successfully!");
             setTimeout(() => {
-                NavigateEvent("/Home");
+                NavigateEvent("/home");
             }, 3000);
         } catch (error) {
             setErrorMsg(error.message || "Signup failed, Try again");

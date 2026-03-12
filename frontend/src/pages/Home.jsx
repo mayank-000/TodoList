@@ -18,8 +18,13 @@ const HomePage = () => {
 
   const handleDelete = async (todoId) => {
     await deleteTodo(todoId, userId);
-    setTodos(todos.filter((todo) => (todo !== todo._id) !== todoId));
+    setTodos(todos.filter((todo) => todo._id !== todoId));
   };
+  const handleUpdate = (updatedTodo) => {
+    setTodos(todos.map(todo => 
+        todo._id === updatedTodo._id ? updatedTodo : todo
+    ));
+};
 
   const handleStatusChange = async (todoId, newStatus) => {
     await changeStatus(todoId, newStatus);
@@ -39,11 +44,13 @@ const HomePage = () => {
         <TodoList
             todos={incompleteTodos}
             onDelete={handleDelete}
+            onUpdate={handleUpdate}
             onStatusChange={handleStatusChange}
         />
         <TodoList
             todos={completedTodos}
             onDelete={handleDelete}
+            onUpdate={handleUpdate}
             onStatusChange={handleStatusChange}
         />
     </div>

@@ -1,31 +1,31 @@
 import { updateTodo } from "../api/todo.api.js";
 import { useState } from "react";
-import { TodoForm } from "./TodoForm.jsx";
 
-export const TodoCard = ({ todo, onDelete, onStatusChange }) => {
+export const TodoCard = ({ todo, onDelete, onStatusChange, onUpdate }) => {
     const [formData, setFormData] = useState({
-        title: TodoForm.title,
-        description: TodoForm.description,
-        status: TodoForm.status
+        title: todo.title,
+        description: todo.description,
     })
+    const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
-    const [successMsg, setSuccessMsg] = useState("");
+    
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setErrorMsg("");
+    }
 
-    const updatetodo = async (e) => {
-        e.preventDefault();
+    const handleUpdate = async () => {
+        if (!formData.title) {
+            setErrorMsg("Title cannot be empty");
+            return;
+        }
         setIsLoading(true);
         setErrorMsg("");
-        setSuccessMsg("");
         try {
-           const response = await updateTodo(formData);
-           if(response.success) {
-            setFormData({
-                title: response.title,
-                dscription: response.description,
-            })
-           } 
-           setSuccessMsg("Todo updated successfully");
+           const response = await updateTodo(todo._id, formData.title, formData.description);
+           onUpdate(response.todo);
+           setIsEditing(false);
         } catch (error) {
             setErrorMsg(error.message || "Failed to update a todo");
         } finally {
@@ -33,21 +33,54 @@ export const TodoCard = ({ todo, onDelete, onStatusChange }) => {
         }
     } 
 
+    const handleCancelEdit = () => {
+        // reset back to original values if user cancels
+        setFormData({ title: todo.title, description: todo.description });
+        setIsEditing(false);
+        setErrorMsg("");
+    }
+
     return (
         <div className={`todo-card ${todo.status ? "completed" : "incomplete"}`}>
-            <button onClick={updatetodo} className="del-btn" disabled={isLoading}>
-                <TodoForm />
-            </button>
-            <button onClick={() => onDelete(todo._id)} className="del-btn" disabled={isLoading}>
-                {isLoading ? "Deleting a Todo..." : "Delete"}
-            </button>
-            <h2>{formData.title}</h2>
-            {errorMsg && <div className="error-message">{errorMsg}</div>}
-            {successMsg && <div className="success-message">{successMsg}</div>}
-            <p>{formData.description}</p>
-            <button onClick={() => onStatusChange(todo._id, !todo.status)}>
-                {todo.status ? "Incomplete" : "Completed"}
-            </button>
+            {isEditing ? (
+                // EDIT MODE - shows inputs
+                <div className="edit-mode">
+                    <input
+                        name="title"
+                        value={formData.title}
+                        onChange={handleChange}
+                        disabled={isLoading}
+                    />
+                    <input
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                        disabled={isLoading}
+                    />
+                    {errorMsg && <div className="error-message">{errorMsg}</div>}
+                    <button onClick={handleUpdate} disabled={isLoading}>
+                        {isLoading ? "Saving..." : "Save"}
+                    </button>
+                    <button onClick={handleCancelEdit} disabled={isLoading}>
+                        Cancel
+                    </button>
+                </div>
+            ) : (
+                // VIEW MODE - shows text
+                <div className="view-mode">
+                    <h2>{todo.title}</h2>
+                    <p>{todo.description}</p>
+                    <button onClick={() => setIsEditing(true)}>
+                        Edit
+                    </button>
+                    <button onClick={() => onDelete(todo._id)} disabled={isLoading}>
+                        {isLoading ? "Deleting..." : "Delete"}
+                    </button>
+                    <button onClick={() => onStatusChange(todo._id, !todo.status)}>
+                        {todo.status ? "Mark Incomplete" : "Mark Complete"}
+                    </button>
+                </div>
+            )}
         </div>
     )
 }
