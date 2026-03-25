@@ -11,9 +11,9 @@ app.use(cors({
   credentials: true
 }));
 import { connectDB } from './config/db.js';
-
+console.log("Trying to connecting to database:");
 connectDB();
-
+console.log("Mongodb connected sucessfully");
 import todoRouter from './routes/todo.route.js';
 import userRouter from './routes/user.route.js';
 
